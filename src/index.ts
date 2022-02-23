@@ -1,24 +1,30 @@
+import bodyParser from 'body-parser';
 import express, { Application, Request, Response } from 'express';
+import sqlite3 from 'sqlite3';
 
 const app: Application = express();
+const dbPath = 'db/database.sqlite3';
 
-const PORT = 3000;
+// リクエストのbodyをパースする
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+/**
+ * get all users
+ */
+app.get('/api/v1/users', (_req: Request, res: Response) => {
+  const db = new sqlite3.Database(dbPath);
 
-app.get('/', (req: Request, res: Response) =>
-  res.status(200).send({ message: 'hello world!!' }),
-);
-
-try {
-  app.listen(PORT, () => {
-    // eslint-disable-next-line no-console
-    console.log(`dev server running at: http://localhost:${PORT}`);
+  db.all('select * from users', (err, rows) => {
+    res.json(rows);
   });
-} catch (error) {
-  if (error instanceof Error) {
-    // eslint-disable-next-line no-console
-    console.error(error.message);
-  }
-}
+
+  db.close();
+});
+
+// api server listen
+const PORT = process.env.PORT || 3000;
+app.listen(
+  PORT,
+  () => console.log(`dev server running at: http://localhost:${PORT}`), // eslint-disable-line no-console
+);

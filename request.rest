@@ -1,7 +1,8 @@
 @scheme = http
 @host = localhost
 @port = 3000
+@path = api/v1/users
 
 ###
 
-GET {{scheme}}://{{host}}:{{port}} HTTP/1.1
+GET {{scheme}}://{{host}}:{{port}}/{{path}} HTTP/1.1
