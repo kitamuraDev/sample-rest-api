@@ -2,7 +2,12 @@
 @host = localhost
 @port = 3000
 @path = api/v1/users
+@id = 4
 
-###
+### get all users
 
 GET {{scheme}}://{{host}}:{{port}}/{{path}} HTTP/1.1
+
+### get a user
+
+GET {{scheme}}://{{host}}:{{port}}/{{path}}/{{id}} HTTP/1.1

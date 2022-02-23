@@ -22,6 +22,24 @@ app.get('/api/v1/users', (_req: Request, res: Response) => {
   db.close();
 });
 
+/**
+ * get a user
+ */
+app.get('/api/v1/users/:id', (req: Request, res: Response) => {
+  const db = new sqlite3.Database(dbPath);
+  const { id } = req.params;
+
+  db.get(`SELECT * FROM users WHERE id = ${id}`, (err, row) => {
+    if (!row) {
+      res.status(404).send({ error: 'Not Found...' });
+    } else {
+      res.status(200).json(row);
+    }
+  });
+
+  db.close();
+});
+
 // api server listen
 const PORT = process.env.PORT || 3000;
 app.listen(
