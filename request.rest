@@ -11,3 +11,7 @@ GET {{scheme}}://{{host}}:{{port}}/{{path}} HTTP/1.1
 ### get a user
 
 GET {{scheme}}://{{host}}:{{port}}/{{path}}/{{id}} HTTP/1.1
+
+### user search
+
+GET {{scheme}}://{{host}}:{{port}}/api/v1/search?keyword=rem HTTP/1.1

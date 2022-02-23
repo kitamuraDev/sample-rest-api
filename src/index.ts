@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import express, { Application, Request, Response } from 'express';
 import sqlite3 from 'sqlite3';
+import { ExRequest } from 'types/requestQuery';
 
 const app: Application = express();
 const dbPath = 'db/database.sqlite3';
@@ -35,6 +36,21 @@ app.get('/api/v1/users/:id', (req: Request, res: Response) => {
     } else {
       res.status(200).json(row);
     }
+  });
+
+  db.close();
+});
+
+/**
+ * user search
+ */
+app.get('/api/v1/search', (req: ExRequest, res: Response) => {
+  const db = new sqlite3.Database(dbPath);
+  const { keyword } = req.query;
+
+  if (typeof keyword === 'undefined') return; // 型の絞り込み。keywordがundefinedなら即時return
+  db.all(`select * from users where name like "%${keyword}%"`, (err, rows) => {
+    res.json(rows);
   });
 
   db.close();
