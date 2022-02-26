@@ -96,6 +96,30 @@ app.post('/api/v1/users', async (req: ExRequestBoby, res: Response) => {
   }
 });
 
+/**
+ * delete user
+ */
+app.delete('/api/v1/users/:id', (req: Request, res: Response) => {
+  const db = new sqlite3.Database(dbPath);
+  const { id } = req.params;
+
+  // ユーザーが存在しているか
+  db.get(`SELECT * FROM users WHERE id = ${id}`, async (_err, row) => {
+    if (!row) {
+      res.status(404).send({ error: '指定されたユーザーが見つかりません。' });
+    } else {
+      try {
+        await run(`DELETE FROM users WHERE id  = ${id}`, db);
+        res.status(200).send({ message: 'ユーザーを削除しました。' });
+      } catch (e) {
+        res.status(500).send({ error: e });
+      }
+    }
+  });
+
+  db.close();
+});
+
 // api server listen
 const PORT = process.env.PORT || 3000;
 app.listen(
