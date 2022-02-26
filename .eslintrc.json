@@ -75,6 +75,13 @@
         "prefix": ["no", "is", "has", "should"],
         "filter": { "regex": "^_", "match": false }
       }
+    ],
+    // 暫定的に「void returnが期待されるPromiseを返す関数」のチェックをfalseにしています。todo: Promiseの扱いを正しく理解する
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
     ]
   },
   "settings": {

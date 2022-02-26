@@ -15,3 +15,19 @@ GET {{scheme}}://{{host}}:{{port}}/{{path}}/{{id}} HTTP/1.1
 ### user search
 
 GET {{scheme}}://{{host}}:{{port}}/api/v1/search?keyword=rem HTTP/1.1
+
+### create user
+
+POST {{scheme}}://{{host}}:{{port}}/{{path}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Masato Kitamura",
+  "profile": "REST Client マジ最高なんだけど!?",
+  "date_of_birth": "2022-8-24"
+}
+
+### delete user
+
+DELETE {{scheme}}://{{host}}:{{port}}/{{path}}/6 HTTP/1.1
+Content-Type: application/json
