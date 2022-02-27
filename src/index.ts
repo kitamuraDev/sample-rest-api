@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import express, { Application, Request, Response } from 'express';
 import sqlite3 from 'sqlite3';
+import { DatabaseRowType } from 'types/databaseRowType';
 import { ExRequestBoby } from 'types/exRequestBody';
 import { ExRequestQuery } from 'types/exRequestQuery';
 
@@ -119,6 +120,57 @@ app.delete('/api/v1/users/:id', (req: Request, res: Response) => {
 
   db.close();
 });
+
+/**
+ * update user data
+ */
+interface ExReqBody<T> extends Request {
+  body: T;
+}
+app.put(
+  '/api/v1/users/:id',
+  (
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    req: ExReqBody<{ name: string; profile: string; date_of_birth: string }>,
+    res: Response,
+  ) => {
+    if (!req.body.name || req.body.name === '') {
+      res.status(400).send({ error: 'ユーザー名が指定されていません。' });
+    } else {
+      const db = new sqlite3.Database(dbPath);
+      const { id } = req.params;
+
+      // ユーザーが存在しているか
+      db.get(
+        `SELECT * FROM users WHERE id = ${id}`,
+        async (_err, row: DatabaseRowType) => {
+          if (!row) {
+            res
+              .status(404)
+              .send({ error: '指定されたユーザーが見つかりません。' });
+          } else {
+            const name = req.body.name ? req.body.name : row.name;
+            const profile = req.body.profile ? req.body.profile : row.profile;
+            const dateOfBirth = req.body.date_of_birth
+              ? req.body.date_of_birth
+              : row.date_of_birth;
+
+            try {
+              await run(
+                `UPDATE users SET name="${name}", profile="${profile}", date_of_birth="${dateOfBirth}" WHERE id=${id}`,
+                db,
+              );
+              res.status(200).send({ message: 'ユーザー情報を更新しました。' });
+            } catch (e) {
+              res.status(500).send({ error: e });
+            }
+          }
+        },
+      );
+      db.close();
+    }
+  },
+);
 
 // api server listen
 const PORT = process.env.PORT || 3000;
