@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import express, { Application, Request, Response } from 'express';
+import path from 'path';
 import sqlite3 from 'sqlite3';
 import { DatabaseRowType } from 'types/databaseRowType';
 import { ExRequestBody } from 'types/exRequestBody';
@@ -11,6 +12,9 @@ const dbPath = 'db/database.sqlite3';
 // リクエストのbodyをパースする
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// 静的ファイルの配信先の設定
+app.use(express.static(path.join(__dirname, 'public')));
 
 /**
  * get all users
