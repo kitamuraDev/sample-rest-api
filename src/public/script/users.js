@@ -106,5 +106,19 @@ const usersModule = (() => {
 
       return handleResponse(res);
     },
+    deleteUser: async (uid) => {
+      const isDeleteUser = window.confirm('このユーザーを削除しますか？');
+
+      if (!isDeleteUser) {
+        return false;
+      } else {
+        const res = await fetch(`${BASE_URL}/${uid}`, {
+          method: 'DELETE',
+          headers: headers,
+        });
+
+        return handleResponse(res);
+      }
+    },
   };
 })();
