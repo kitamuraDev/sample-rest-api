@@ -6,6 +6,37 @@ const usersModule = (() => {
   const headers = new Headers();
   headers.set('Content-Type', 'application/json');
 
+  /**
+   * レスポンスハンドリング（apiサーバから帰ってきたstatus-codeを元にフロントサイドのハンドリングを行う）
+   * @param {Response} res
+   */
+  const handleResponse = async (res) => {
+    const resJson = await res.json();
+
+    switch (res.status) {
+      case 200:
+        alert(resJson.message);
+        window.location.href = '/';
+        break;
+      case 201:
+        alert(resJson.message);
+        window.location.href = '/';
+        break;
+      case 400:
+        alert(resJson.error);
+        break;
+      case 404:
+        alert(resJson.error);
+        break;
+      case 500:
+        alert(resJson.error);
+        break;
+      default:
+        alert('何らかのエラーが発生');
+        break;
+    }
+  };
+
   return {
     fetchAllUsers: async () => {
       const res = await fetch(BASE_URL);
@@ -28,6 +59,25 @@ const usersModule = (() => {
           .getElementById('users-list')
           .insertAdjacentHTML('beforeend', body);
       }
+    },
+    createUser: async () => {
+      const name = document.getElementById('name').value;
+      const profile = document.getElementById('profile').value;
+      const dateOfBirth = document.getElementById('date-of-birth').value;
+
+      const body = {
+        name: name,
+        profile: profile,
+        date_of_birth: dateOfBirth,
+      };
+
+      const res = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(body),
+      });
+
+      return handleResponse(res);
     },
   };
 })();

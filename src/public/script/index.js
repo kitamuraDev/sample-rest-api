@@ -9,14 +9,14 @@ const indexModule = (() => {
 
       return usersModule.fetchAllUsers();
 
-    // case '/create.html':
-    //   document.getElementById('save-btn').addEventListener('click', () => {
-    //     return usersModule.createUser()
-    //   })
-    //   document.getElementById('cancel-btn').addEventListener('click', () => {
-    //     return window.location.href = '/'
-    //   })
-    //   break;
+    case '/create.html':
+      document.getElementById('save-btn').addEventListener('click', () => {
+        return usersModule.createUser();
+      });
+      document.getElementById('cancel-btn').addEventListener('click', () => {
+        return (window.location.href = '/');
+      });
+      break;
 
     // case '/edit.html':
     //   const uid = window.location.search.split('?uid=')[1]
