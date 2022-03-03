@@ -24,3 +24,5 @@ yarn-error.log*
 
 # database
 db/database.sqlite3
+
+request.rest

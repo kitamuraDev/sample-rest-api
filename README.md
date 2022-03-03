@@ -9,7 +9,7 @@ Simple CRUD REST API application.
 
 ## ■ アプリの起動方法
 
-1. $ `git clone https://github.com/kitamuraDev/sample-rest-api`
+1. $ `git clone https://github.com/kitamuraDev/sample-rest-api.git`
 2. $ `cd sample-rest-api`
 3. $ `yarn`
 4. $ `yarn dev`
@@ -18,5 +18,5 @@ Simple CRUD REST API application.
 
 ## ■ 開発で使用するコマンド
 
-- $ `yarn connect`（DB 接続 ~sqlite3~）
+- $ `yarn connect`（DB 接続）
 - $ `yarn prepare`（simple-git-hooks の登録。コミット時に eslint のチェックが走ります）
